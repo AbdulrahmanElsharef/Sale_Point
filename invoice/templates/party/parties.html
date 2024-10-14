@@ -1,0 +1,95 @@
+{% extends '_base.html' %}
+
+{% load static %}
+{% load humanize %}
+{% load custom_filters %}
+
+{% block title_block %}
+  Parties
+{% endblock %}
+
+{% block body_block %}
+  <div class="input-container">
+    <h3>New Party/Customer Entry</h3>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success-alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form action="" method="post">
+      {% include 'includes/_form_hidden.html' with form_name=form %}
+
+      <table class="input-table">
+        {% include 'includes/_form_fields.html' with form_name=form %}
+
+        <tr>
+          <td></td>
+          <td class="right-align">
+            <button type="submit" class="btn btn-primary">
+              Save
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+  <div class="display-container">
+    <h3>All Customers/Parties</h3>
+
+    <div class="search-form">
+      <form class="flex-contents" id="search" method="get" action="{% url 'invoice:parties' %}">
+        <div class="search-field">
+          <label for="from-date">Search party name</label>
+          <input id="search-text" type="text" name="q" placeholder="Party name"/>
+        </div>
+        <div class="search-field">
+          <p>&nbsp;</p>
+          <button class="btn btn-secondary" type="submit">
+            <img src="{% static 'images/icon-search.png' %}" alt="search">
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <table class="data-table">
+      <tr>
+        <th>Name</th>
+        <th>Total bill</th>
+        <th>Balance</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th></th>
+      </tr>
+
+      {% for party in page_obj %}
+        <tr>
+          <td>{{ party.name }}</td>
+          <td class="price-field">EG {{ party.total_bill|default:0|intcomma }}.00</td>
+
+          <td class="{% if party.balance_amount > 0 %}negative-price{% else %}price-field{% endif %}">
+            EG {{ party.balance_amount|default:0|intcomma }}.00
+          </td>
+
+          <td>{{ party.phone }}</td>
+          <td>{{ party.address|first_word }}</td>
+          <td class="center-field">
+            <a class="icon-edit" href="{% url 'invoice:party_detail' party.id %}">
+              <img src="{% static 'images/icon-edit.png' %}" alt="Edit">
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5" class="center-field">No parties found.</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    {% include "includes/pagination.html" %}
+  </div>
+{% endblock %}

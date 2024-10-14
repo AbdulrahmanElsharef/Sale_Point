@@ -1,0 +1,38 @@
+{% extends '_base.html' %}
+
+{% load static %}
+
+{% block title_block %}
+  Profile
+{% endblock %}
+
+{% block body_block %}
+  <div class="input-container">
+    <h3>Edit Company Details</h3>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="success-alert">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <form id="form" method="post" action="">
+      {% include 'includes/_form_hidden.html' with form_name=form %}
+
+      <table class="input-table">
+        {% include 'includes/_form_fields.html' with form_name=form %}
+
+        <tr>
+          <td></td>
+          <td class="right-align">
+            <button type="submit" class="btn btn-primary">
+              Save
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+{% endblock %}

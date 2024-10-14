@@ -1,0 +1,32 @@
+{% extends '_base.html' %}
+
+{% block title_block %}
+  Item/Service
+{% endblock %}
+
+{% block body_block %}
+  <div class="input-container">
+    <h3>Edit item/service</h3>
+
+    <form id="party-form" action="{% url 'invoice:item_detail' p_id %}" method="post">
+      {% include 'includes/_form_hidden.html' with form_name=form %}
+
+      <table class="input-table">
+        {% include 'includes/_form_fields.html' with form_name=form %}
+
+        <tr>
+          <td>
+            <a class="anchor-btn" href="{% url 'invoice:stock' %}">
+              Back
+            </a>
+          </td>
+          <td class="right-align">
+            <button type="submit" class="btn btn-primary">
+              Save
+            </button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,154 @@
+{% extends '_base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title_block %}
+  New Invoice
+{% endblock %}
+
+{% block css_block %}
+  <link rel="stylesheet" href="{% static 'css/select2.min.css' %}">
+  <script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+  <script src="{% static 'js/select2.min.js' %}"></script>
+{% endblock %}
+
+{% block body_block %}
+  <div class="input-container">
+    <h3>New invoice</h3>
+
+    <form action="" method="post">
+      {% include 'includes/_form_hidden.html' with form_name=form %}
+
+      <table class="input-table">
+        {% include 'includes/_form_fields.html' with form_name=form %}
+
+        <tr>
+          <td></td>
+          <td class="right-align">
+            <button type="submit" class="btn btn-primary">Continue</button>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+
+  <div class="display-container">
+    <h3>Invoice History</h3>
+
+    <div class="search-form">
+      <form class="flex-contents" id="frmdate" method="get" action="{% url 'invoice:invoice_list' %}">
+        <div class="search-field">
+          <label for="from-date">Show invoice from</label>
+          <input id="from-date" type="date" name="from-date" placeholder="dd-mm-yyyy"/>
+        </div>
+
+        <div class="search-field">
+          <label for="to-date">To date</label>
+          <input id="to-date" type="date" name="to-date" placeholder="dd-mm-yyyy"/>
+        </div>
+
+        <div class="search-field">
+          <p>&nbsp;</p>
+          <button class="btn btn-secondary" type="submit">
+            <img src="{% static 'images/icon-search.png' %}" alt="search">
+          </button>
+        </div>
+      </form>
+
+      <form class="flex-contents" id="frmname" method="get" action="{% url 'invoice:invoice_list' %}">
+        <div class="search-field">
+          <label for="search_party">Party name</label>
+          <input id="party-search" type="text" name="q" placeholder="Party name"/>
+        </div>
+
+        <div class="search-field">
+          <p>&nbsp;</p>
+          <button class="btn btn-secondary" type="submit">
+            <img src="{% static 'images/icon-search.png' %}" alt="search">
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <table class="data-table">
+      <tr>
+        <th>Date</th>
+        <th>Party</th>
+        <th>Bill Total</th>
+        <th colspan="3"></th>
+      </tr>
+
+      {% for invoice in page_obj %}
+        <tr>
+          <td>{{ invoice.bill_date|date:"d-m-Y" }}</td>
+          <td>{{ invoice.party.name }}</td>
+          <td class="price-field">EG {{ invoice.total_amount|default:0|intcomma }}.00</td>
+
+          <td class="center-field">
+            <a class="icon-edit" href="{% url 'invoice:transaction_detail' invoice.id %}">
+              <img src="{% static 'images/icon-edit.png' %}" alt="Edit">
+            </a>
+          </td>
+          <td class="center-field">
+             <a class="icon-print" href="{% url 'invoice:print_invoice' invoice.id %}" target="_blank">
+              <img src="{% static 'images/icon-print.png' %}" alt="Print">
+            </a>
+          </td>
+          <td class="center-field">
+            <a class="icon-delete" invoice-id="{{invoice.id}}">
+              <img src="{% static 'images/icon-delete.png' %}" alt="Delete">
+            </a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="center-field">No invoice found.</td>
+        </tr>
+      {% endfor %}
+    </table>
+
+    <div class="total-field">
+      Total sales:
+      <span class="total-value">EG {{ net_total|default:0|intcomma }}.00</span>
+    </div>
+
+    {% include "includes/pagination.html" %}
+  </div>
+
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      // Delete Invoice
+
+      $(document).on('click', '.icon-delete', function() {
+        if (confirm('Are you sure to delete?')) {
+          let invoiceId = $(this).attr("invoice-id");
+
+          if (invoiceId) {
+            $.ajax({
+              url: "{% url 'invoice:delete_invoice_ajax' %}",
+              type: "GET",
+              data: { invoice_id: invoiceId },
+            }).done(function (response) {
+              if(response.result == "failed") {
+                alert("Please delete all transaction of selected invoice before delete!");
+              }
+              else {
+                location.reload();
+              }
+            }).fail(function() {
+              alert("An error occurred while processing the request.");
+            });
+          }
+        }
+      });
+    });
+  </script>
+
+  <script>
+    $("#id_party").select2( {
+      placeholder: "Select name",
+      allowClear: true
+    });
+</script>
+{% endblock %}
