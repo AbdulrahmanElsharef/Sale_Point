@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body_block %}
-  <div class="input-container">
+  <div class="display-container">
     <h3>Add invoice items/services</h3>
 
     {% if messages %}
@@ -31,8 +31,12 @@
           <td><strong>{{ data.bill_date|date:"d-m-Y" }}</strong></td>
         </tr>
         <tr>
-          <td>Party name:</td>
+          <td>Custome :</td>
           <td><strong>{{ data.party.name }}</strong></td>
+        </tr>
+        <tr>
+          <td>Phone :</td>
+          <td><strong>{{ data.party.phone }}</strong></td>
         </tr>
         <tr>
           <td>Bill Amount:</td>
@@ -90,7 +94,7 @@
       </form>
     {% endif %}
 
-    {% if service_form %}
+    {% comment %} {% if service_form %}
       <form id="services" class="tab-content" action="{% url 'invoice:transaction_detail' p_id %}" method="post">
         {% include 'includes/_form_hidden.html' with form_name=service_form %}
 
@@ -109,7 +113,7 @@
           </tr>
         </table>
       </form>
-    {% endif %}
+    {% endif %} {% endcomment %}
   </div>
 
   <div class="display-container">
@@ -124,17 +128,20 @@
 
     <table class="data-table">
       <tr>
-        <th>Items</th>
+        <th>Item</th>
+        <th>Des</th>
         <th>Price</th>
-        <th>Quantity</th>
-        <th>Discount</th>
+        <th>QT</th>
+        {% comment %} <th>Cost</th> {% endcomment %}
+        <th>Dis</th>
         <th>Amount</th>
         <th></th>
       </tr>
       {% for trans in transactions %}
         <tr>
           <td>{{ trans.item.name }}</td>
-          <td>EG {{ trans.price|intcomma }}.00</td>
+          <td>{{ trans.item.des }}</td>
+          <td>{{ trans.price|intcomma }}</td>
           <td class="center-field">
             {% if trans.quantity == 0 %}
               -
@@ -150,8 +157,8 @@
               {{ trans.discount_percent }}%
             {% endif %}
           </td>
-
-          <td class="price-field">EG {{ trans.amount|intcomma }}.00</td>
+          {% comment %} <td>EG {{ trans.price }} * {{trans.quantity }}.00</td> {% endcomment %}
+          <td class="price-field">EG {{ trans.amount|intcomma }}</td>
           <td class="center-field">
             {% if data.amount_paid == 0 %}
               <a class="icon-delete" trans-id="{{trans.id}}">
@@ -250,14 +257,18 @@
       $('#services #id_amount, #services #id_discount_percent').focusout(calculateAmountService);
 
       // Initialize Select2 for item selection
+
+    
       $("#items #id_item").select2( {
         placeholder: "Select Item",
         allowClear: true
+        
       });
 
       $("#services #id_item").select2( {
         placeholder: "Select Service",
         allowClear: true
+        
       });
     });
   </script>

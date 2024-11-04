@@ -41,7 +41,7 @@ class PartiesView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Party
     template_name = 'party/parties.html'
     form_class = PartyForm
-    success_message = 'New Party saved successfully!'
+    success_message = 'New Customer saved successfully!'
     paginate_by = 50
     page_kwarg = 'page'
 
@@ -53,10 +53,10 @@ class PartiesView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def get_queryset(self):
         # Show all transaction with total purchase for all parties
         search_txt = self.request.GET.get('q', '')
-
+        # search_phone = self.request.GET.get('phone', '')
         qs = Party.objects.annotate(
             total_bill=Sum('sales__total_amount')
-        ).filter(name__icontains=search_txt).order_by('name')
+        ).filter(phone__icontains=search_txt).order_by('name')
 
         return qs
 
@@ -83,7 +83,7 @@ class SinglePartyView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Party
     template_name = 'party/update-party.html'
     fields = ['name', 'phone', 'address']
-    success_message = 'Party updated successfully!'
+    success_message = 'Customer updated successfully!'
     paginate_by = 50
     page_kwarg = 'page'
 
@@ -121,7 +121,7 @@ class PartyBalanceView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = PartyBalance
     template_name = 'party/balance_payment.html'
     form_class = PartyBalanceForm
-    success_message = 'Party balance is paid successfully!'
+    success_message = 'Customer balance is paid successfully!'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -156,8 +156,20 @@ class StockView(LoginRequiredMixin, ListView):
         return qs.urlencode()
 
     def get_queryset(self):
+        # search_txt = self.request.GET.get('q', '')
+        # return super().get_queryset().filter(name__icontains=search_txt).order_by('name')
         search_txt = self.request.GET.get('q', '')
-        return super().get_queryset().filter(name__icontains=search_txt).order_by('name')
+        search_des = self.request.GET.get('des', '')
+
+        queryset = super().get_queryset()
+
+        if search_txt:
+            queryset = queryset.filter(name__icontains=search_txt)
+
+        elif search_des:
+            queryset = queryset.filter(des__icontains=search_des)
+
+        return queryset.order_by('name')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -246,13 +258,16 @@ class InvoiceView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         from_date = self.request.GET.get('from-date', '')
         to_date = self.request.GET.get('to-date', '')
         search_party = self.request.GET.get('q', '')
+        # search_phone = self.request.GET.get('phone', '')
 
         filters = Q()
 
         if from_date and to_date:
             filters &= Q(bill_date__range=[from_date, to_date])
         if search_party:
-            filters &= Q(party__name__icontains=search_party)
+            filters &= Q(party__phone__icontains=search_party)
+        # elif search_phone:
+        #     filters &= Q(party__phone__icontains=search_phone)
 
         qs = Sale.objects.filter(filters).order_by('-bill_date')
 
@@ -286,7 +301,7 @@ class TransactionView(LoginRequiredMixin, View):
 
     model = Transaction
     template_name = 'invoice/transaction.html'
-
+    
     def get(self, request, p_id):
         sale = get_object_or_404(Sale, id=p_id)
         transactions = Transaction.objects.filter(sales=p_id)

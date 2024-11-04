@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block body_block %}
-  <div class="input-container">
+  <div class="display-container">
     <h3>New invoice</h3>
 
     <form action="" method="post">
@@ -58,8 +58,8 @@
 
       <form class="flex-contents" id="frmname" method="get" action="{% url 'invoice:invoice_list' %}">
         <div class="search-field">
-          <label for="search_party">Party name</label>
-          <input id="party-search" type="text" name="q" placeholder="Party name"/>
+          <label for="search_party">Customer Phone</label>
+          <input id="party-search" type="text" name="q" placeholder="Phone"/>
         </div>
 
         <div class="search-field">
@@ -73,16 +73,20 @@
 
     <table class="data-table">
       <tr>
+        <th>No</th>
         <th>Date</th>
-        <th>Party</th>
+        <th>Customer</th>
+        <th>Phone</th>
         <th>Bill Total</th>
         <th colspan="3"></th>
       </tr>
 
       {% for invoice in page_obj %}
         <tr>
+          <td>{{ invoice.id }}</td>
           <td>{{ invoice.bill_date|date:"d-m-Y" }}</td>
           <td>{{ invoice.party.name }}</td>
+          <td>{{ invoice.party.phone }}</td>
           <td class="price-field">EG {{ invoice.total_amount|default:0|intcomma }}.00</td>
 
           <td class="center-field">
@@ -95,11 +99,11 @@
               <img src="{% static 'images/icon-print.png' %}" alt="Print">
             </a>
           </td>
-          <td class="center-field">
+          {% comment %} <td class="center-field">
             <a class="icon-delete" invoice-id="{{invoice.id}}">
               <img src="{% static 'images/icon-delete.png' %}" alt="Delete">
             </a>
-          </td>
+          </td> {% endcomment %}
         </tr>
       {% empty %}
         <tr>

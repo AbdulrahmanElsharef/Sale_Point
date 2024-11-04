@@ -1,4 +1,7 @@
 {% extends '_base.html' %}
+{% load static %}
+
+
 
 {% block title_block %}
   Home
@@ -7,8 +10,11 @@
 {% block body_block %}
   <div class="center-container">
     <div>
-      <h4>welcome to</h4>
-      <h1>Maharashtra Auto Engineering<br />Lathe Workshop</h1>
+      {% comment %} <h4>welcome to</h4> {% endcomment %}
+      <img  src="{% static 'images/smart-gate.png' %}" alt="smart-gate.png" width="100" height="200">
+      <h1>welcome to SmartGate </h1>
+      <h2> Invoice  </h2>
+      <h3>  Pos </h3>
     </div>
   </div>
 {% endblock %}

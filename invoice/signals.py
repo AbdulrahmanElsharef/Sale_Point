@@ -7,7 +7,7 @@ from .models import PartyBalance, Transaction
 @receiver(post_save, sender=PartyBalance)
 def update_party_balance_on_save(sender, instance, created, **kwargs):
     """
-    Update the balance_amount of the related Party when a PartyBalance is saved.
+    Update the balance_amount of the related customer when a customerBalance is saved.
     """
     party = instance.party
     party.balance_amount = F('balance_amount') - instance.amount
@@ -16,7 +16,7 @@ def update_party_balance_on_save(sender, instance, created, **kwargs):
 @receiver(post_delete, sender=PartyBalance)
 def update_party_balance_on_delete(sender, instance, **kwargs):
     """
-    Update the balance_amount of the related Party when a PartyBalance is deleted.
+    Update the balance_amount of the related customer when a customerBalance is deleted.
     """
     party = instance.party
 

@@ -6,7 +6,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
-    MAEL -{% block title_block %}
+   SmartGate -{% block title_block %}
+   <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
     {% endblock title_block %}
   </title>
 
@@ -18,12 +19,12 @@
   <nav class="navbar">
     <div class="nav-center">
       <div class="logo">
-        <a href="/" class="brand-logo">MAEL</a>
+        <a href="/" class="brand-logo">SmartGate</a>
       </div>
       <div class="nav-links">
         <a href="/invoice/" class="nav-link">New Invoice</a>
         <a href="/stock/" class="nav-link">Stocks</a>
-        <a href="/parties/" class="nav-link">Parties</a>
+        <a href="/parties/" class="nav-link">Customers</a>
         <a href="{% url 'invoice:profile' 1 %}" class="nav-link">Profile</a>
 
         {% if user.is_authenticated %}
@@ -48,7 +49,7 @@
   </div>
 
   <footer>
-    <p>Developed by Vilash Daate</p>
+    <p>Developed by Abdulrahman Elsharef</p>
   </footer>
 </body>
 </html>

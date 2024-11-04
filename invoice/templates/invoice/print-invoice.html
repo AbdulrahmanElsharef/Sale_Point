@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MAEL - Print invoice</title>
+  <title>SmartGate - Print invoice</title>
   <link rel="stylesheet" href="{% static 'css/print-style.css' %}">
   <style>
     @media print {
@@ -27,11 +27,11 @@
     </div>
 
     <div class="company-logo">
-      <img src="{% static 'images/logo.jpeg' %}" alt="MAEL">
+      <img src="{% static 'images/invoice_logo.jpg' %}" alt="smart">
     </div>
   </div>
 
-  <h3 class="bill-title">Tax Invoice</h3>
+  <h3 class="bill-title"> Invoice</h3>
 
   <div class="div-flex">
     <div class="party">
@@ -41,8 +41,8 @@
           <td>&nbsp;<b>{{ bill.party.name }}</b></td>
         </tr>
         <tr>
-          <td>Address:</td>
-          <td>&nbsp;<b>{{ bill.party.address }}</b></td>
+          <td>Phone:</td>
+          <td>&nbsp;<b>{{ bill.party.phone }}</b></td>
         </tr>
       </table>
     </div>
@@ -63,28 +63,28 @@
 
   <table class="data-table">
     <tr>
-      <th style="text-align: left;">Item name</th>
-      <th class="right-field">Price/Unit</th>
-      <th>Qty</th>
-      <th>Amount</th>
-      <th>Discount %</th>
-      <th class="right-field">Net Amount</th>
+      <th style="text-align: left;">Item</th>
+      <th class="center-field">Price</th>
+      <th class="center-field">Qty</th>
+      <th class="center-field">Total</th>
+      <th class="center-field">Dis </th>
+      <th class="center-field">Net Total </th>
     </tr>
     {% for trans in transactions %}
       <tr>
-        <td class="name-cell">{{ trans.item.name }}</td>
-        <td class="right-field">EG {{ trans.price|intcomma }}.00</td>
+        <td class="name-cell">{{ trans.item.des }}</td>
+        <td class="center-field"> {{ trans.price|intcomma }}.00</td>
         {% if trans.quantity == 0 %}
           <td class="center-field">-</td>
-          <td class="right-field">EG {{ trans.price|intcomma }}.00
+          <td class="right-field"> {{ trans.price|intcomma }}.00
         </td>
         {% else %}
           <td class="center-field">{{ trans.quantity }}</td>
-          <td class="right-field">EG {{ trans.actual_amount |intcomma }}.00
+          <td class="center-field"> {{ trans.actual_amount |intcomma }}.00</td>
         {% endif %}
 
-        <td class="center-field">{{ trans.discount_percent }}%</td>
-        <td class="right-field">EG {{ trans.amount|intcomma }}.00</td>
+        <td class="center-field">{{ trans.discount_percent }} %</td>
+        <td class="center-field"> {{ trans.amount|intcomma }}.00</td>
       </tr>
     {% endfor %}
   </table>
@@ -101,13 +101,13 @@
   <br>
   <div class="div-flex">
     <div class="small-text">
-      <p><b>Terms & Conditions</b></p>
-      <p>1. Goods once sold will not be taken back or exchanged.</p>
-      <p>2. Job work will not have any kind of guarantee and warranty.</p>
+      <h4><b>Thank you for your business!</b></h4>
+      <p>If you have any questions about this invoice, please contact</p>
+      <p  style="color: blue;">info@smartgatestore.com</p>
     </div>
     <div style="text-align: center;">
-      <p>___________________________</p>
-      <p><b>For Maharashtra Engineering</b></p>
+      <!-- <p>___________________________</p> -->
+      <!-- <p><b>For Maharashtra Engineering</b></p> -->
     </div>
   </div>
   <br>

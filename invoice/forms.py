@@ -11,7 +11,7 @@ class UpperField(forms.CharField):
 
 
 class PartyForm(forms.ModelForm):
-    name = UpperField(label='Party name')
+    name = UpperField(label='Customer Name')
     phone = forms.CharField(label='Phone')
     address = forms.CharField(label='Address')
 
@@ -25,7 +25,7 @@ class PartyForm(forms.ModelForm):
 
         if Party.objects.filter(name=tmp_name).exclude(
                 id=self.instance.id).exists():
-            raise forms.ValidationError('Party Name is already exists.')
+            raise forms.ValidationError('Customer Name is already exists.')
         return tmp_name
 
 
@@ -83,7 +83,7 @@ class InvoiceForm(forms.ModelForm):
     )
     party = forms.ModelChoiceField(
         queryset=Party.objects.all().order_by('name'),
-        label='Party name'
+        label='Customer name'
     )
 
     class Meta:
@@ -94,8 +94,9 @@ class InvoiceForm(forms.ModelForm):
 class TransactionItemForm(forms.ModelForm):
     item = forms.ModelChoiceField(
         queryset=ItemService.objects.filter(item_type=True).order_by('name'),
-        label='Item Name'
+        label='Item Name',
     )
+    # name = forms.IntegerField(initial=0, label='Price')
     price = forms.IntegerField(initial=0, label='Price')
     quantity = forms.IntegerField(initial=1, label='Quantity')
     amount = forms.IntegerField(initial=0, label='Amount')
