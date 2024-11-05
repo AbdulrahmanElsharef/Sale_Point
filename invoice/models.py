@@ -15,6 +15,9 @@ class Profile(models.Model):
     def get_absolute_url(self):
         return reverse('invoice:profile', kwargs={'pk': self.pk})
 
+    class Meta:
+        verbose_name_plural = "CompanyProfile"
+
 
 class Party(models.Model):
     name = models.CharField(max_length=80,)
@@ -50,7 +53,7 @@ class ItemService(models.Model):
     discount = models.DecimalField(max_digits=5, decimal_places=0, default=0)
 
     class Meta:
-        verbose_name_plural = 'Items '
+        verbose_name_plural = 'Stocks'
 
     def __str__(self):
         return str(self.name)
@@ -64,6 +67,8 @@ class Sale(models.Model):
     remaining_balance = models.PositiveIntegerField(default=0)
 
     # Have Signal to Update 'total_amount' when related Transaction 'added/updated/deleted'
+    class Meta:
+        verbose_name_plural = ' invoices'
 
     def __str__(self):
         return f"invoice {self.id} -- {self.party.name}"
@@ -84,6 +89,8 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Invoice-{self.sales.id}"
+    class Meta:
+        verbose_name_plural = ' invoiceItems'
 
     @property
     def item_type(self):

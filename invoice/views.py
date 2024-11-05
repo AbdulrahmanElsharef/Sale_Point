@@ -56,7 +56,7 @@ class PartiesView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         # search_phone = self.request.GET.get('phone', '')
         qs = Party.objects.annotate(
             total_bill=Sum('sales__total_amount')
-        ).filter(phone__icontains=search_txt).order_by('name')
+        ).filter(phone__icontains=search_txt).order_by('-id')
 
         return qs
 
@@ -269,7 +269,7 @@ class InvoiceView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         # elif search_phone:
         #     filters &= Q(party__phone__icontains=search_phone)
 
-        qs = Sale.objects.filter(filters).order_by('-bill_date')
+        qs = Sale.objects.filter(filters).order_by('-id')
 
         net_total = qs.aggregate(Sum('total_amount'))['total_amount__sum'] or 0
 
@@ -301,7 +301,7 @@ class TransactionView(LoginRequiredMixin, View):
 
     model = Transaction
     template_name = 'invoice/transaction.html'
-    
+
     def get(self, request, p_id):
         sale = get_object_or_404(Sale, id=p_id)
         transactions = Transaction.objects.filter(sales=p_id)
