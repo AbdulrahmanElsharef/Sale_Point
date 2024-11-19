@@ -12,7 +12,7 @@
   <style>
     @media print {
         button {
-            display: none;  
+            display: none;
         }
     }
 </style>
@@ -21,14 +21,14 @@
   <div class="div-flex">
     <div>
       <div class="company-name">{{ company.name }}</div>
-      <p>{{ company.address }}</p>
+      <!--<p>{{ company.address }}</p>-->
       <p>{{ company.phone }}</p>
-      <p>{{ company.reg_no }}</p>
+      <!--<p>{{ company.reg_no }}</p>-->
     </div>
 
-    <div class="company-logo">
-      <img src="{% static 'images/invoice_logo.jpg' %}" alt="smart">
-    </div>
+    <!--<div class="company-logo">-->
+    <!--  <img src="{% static 'images/invoice_logo.jpg' %}" alt="smart">-->
+    <!--</div>-->
   </div>
 
   <h3 class="bill-title"> Invoice</h3>
@@ -63,6 +63,7 @@
 
   <table class="data-table">
     <tr>
+      <!--<th style="text-align: left;">Barcode</th>-->
       <th style="text-align: left;">Item</th>
       <th class="center-field">Price</th>
       <th class="center-field">Qty</th>
@@ -72,6 +73,7 @@
     </tr>
     {% for trans in transactions %}
       <tr>
+        <!--<td class="name-cell">{{ trans.item.name }}</td>-->
         <td class="name-cell">{{ trans.item.des }}</td>
         <td class="center-field"> {{ trans.price|intcomma }}.00</td>
         {% if trans.quantity == 0 %}
@@ -103,7 +105,7 @@
     <div class="small-text">
       <h4><b>Thank you for your business!</b></h4>
       <p>If you have any questions about this invoice, please contact</p>
-      <p  style="color: blue;">info@smartgatestore.com</p>
+      <p  style="color: blue;">info@AltawheedGroup.com</p>
     </div>
     <div style="text-align: center;">
       <!-- <p>___________________________</p> -->

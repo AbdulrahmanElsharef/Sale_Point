@@ -147,7 +147,7 @@ class StockView(LoginRequiredMixin, ListView):
     """
     model = ItemService
     template_name = 'stock/new-item-stock-list.html'
-    paginate_by = 50
+    paginate_by = 100
     page_kwarg = 'page'
 
     def querystring(self):
@@ -268,7 +268,7 @@ class InvoiceView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
             filters &= Q(party__phone__icontains=search_party)
         # elif search_phone:
         #     filters &= Q(party__phone__icontains=search_phone)
-
+        # objects.all()[:5]
         qs = Sale.objects.filter(filters).order_by('-id')
 
         net_total = qs.aggregate(Sum('total_amount'))['total_amount__sum'] or 0
@@ -357,7 +357,7 @@ class PrintInvoiceView(LoginRequiredMixin, View):
 
     def get(self, request, p_id):
         # Get company profile
-        company = get_object_or_404(Profile, id=1)
+        company = get_object_or_404(Profile, id=2)
 
         # Get Invoice detail
         bill = get_object_or_404(Sale, id=p_id)

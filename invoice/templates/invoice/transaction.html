@@ -174,14 +174,14 @@
       {% endfor %}
     </table>
 
-     <div class="heading-flex">
-      <div>
-        {% if data.amount_paid == 0 %}
-          <a class="btn btn-primary" href="{% url 'invoice:invoice_payment' sale_id=data.id %}">Pay Bill</a>
-        {% else %}
-          <span><b>This Invoice is paid!</b></span>
-        {% endif %}
-      </div>
+     <!--<div class="heading-flex">-->
+     <!-- <div>-->
+     <!--   {% if data.amount_paid == 0 %}-->
+     <!--     <a class="btn btn-primary" href="{% url 'invoice:invoice_payment' sale_id=data.id %}">Pay Bill</a>-->
+     <!--   {% else %}-->
+     <!--     <span><b>This Invoice is paid!</b></span>-->
+     <!--   {% endif %}-->
+     <!-- </div>-->
 
       <div class="total-field">
         Net Amount:
@@ -258,17 +258,17 @@
 
       // Initialize Select2 for item selection
 
-    
+
       $("#items #id_item").select2( {
         placeholder: "Select Item",
         allowClear: true
-        
+
       });
 
       $("#services #id_item").select2( {
         placeholder: "Select Service",
         allowClear: true
-        
+
       });
     });
   </script>

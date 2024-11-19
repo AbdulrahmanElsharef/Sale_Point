@@ -16,7 +16,8 @@ class PartyAdmin(admin.ModelAdmin):
 @admin.register(ItemService)
 class ItemServiceAdmin(ImportExportModelAdmin):
     list_display = ["__str__","name","des","item_type","quantity","price","discount"]
-    list_filter=["name","item_type","quantity","price","discount"]
+    list_filter=["name","des","item_type","quantity","price","discount"]
+    search_fields = ("des",)
 @admin.register(Sale)
 class SaleAdmin(admin.ModelAdmin):
     list_display = ["__str__","bill_date","total_amount","amount_paid","remaining_balance"]

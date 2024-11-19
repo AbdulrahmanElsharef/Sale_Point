@@ -40,7 +40,7 @@
       <form class="flex-contents" id="frmdate" method="get" action="{% url 'invoice:invoice_list' %}">
         <div class="search-field">
           <label for="from-date">Show invoice from</label>
-          <input id="from-date" type="date" name="from-date" placeholder="dd-mm-yyyy"/>
+          <input id="from-date" type="date" name="from-date"  placeholder="dd-mm-yyyy"/>
         </div>
 
         <div class="search-field">
@@ -119,7 +119,13 @@
 
     {% include "includes/pagination.html" %}
   </div>
+// <script>
+//   // Get a reference to the date input element
+//   const fromDateInput = document.getElementById('from-date');
 
+//   // Set the date value (replace '2023-11-13' with your desired date)
+//   fromDateInput.value = '11/11/2024';
+// </script>
   <script type='text/javascript'>
     $(document).ready(function() {
       // Delete Invoice
